@@ -48,8 +48,9 @@ class TodosViewModel @Inject constructor(private val repository: TodoRepository)
             is TodoListEvent.OnDoneChange -> {
                viewModelScope.launch {
                    repository.updateTodo(event.todo.copy(
-                       isCompleted = true
+                       isCompleted = event.isDone
                    ))
+                   sendUiEvent(UiEvent.ShowSnackBar(message = "Todo updated successfully", null))
                }
             }
         }

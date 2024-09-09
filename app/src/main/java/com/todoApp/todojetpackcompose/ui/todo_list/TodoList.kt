@@ -24,6 +24,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,6 +33,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,12 +54,12 @@ fun TodoListScreen(
     viewModel: TodosViewModel = hiltViewModel()
 ) {
     val todos = viewModel.todos.collectAsState(initial = emptyList())
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.ShowSnackBar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
+                    snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
@@ -66,6 +69,8 @@ fun TodoListScreen(
             }
         }
     }
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -88,6 +93,9 @@ fun TodoListScreen(
             ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "")
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         },
 
     ) { paddingValue ->

@@ -66,6 +66,7 @@ class TodoRepository @Inject constructor(private val todoApi: ITodoApi) {
             val response = todoApi.addNewTodo(todo)
             if(response.isSuccessful && response.body() != null){
                 _isAddDone.value = response.body()!!
+                getAllTodos()
             }
         }catch (ex:Exception){
             Log.d("Todo Error", ex.message.toString())
@@ -82,6 +83,7 @@ class TodoRepository @Inject constructor(private val todoApi: ITodoApi) {
             val response = todoApi.updateTodo(todo)
             if(response.isSuccessful && response.body() != null){
                 _isUpdateDone.value = response.body()!!
+                getAllTodos()
             }
         }catch (ex:Exception){
             Log.d("Todo Error", ex.message.toString())
@@ -97,6 +99,7 @@ class TodoRepository @Inject constructor(private val todoApi: ITodoApi) {
             val response = todoApi.updateTodo(todo)
             if(response.isSuccessful && response.body() != null){
                 _isDeleteDone.value = response.body()!!
+                getAllTodos()
             }
         }catch (ex:Exception){
             Log.d("Todo Error", ex.message.toString())

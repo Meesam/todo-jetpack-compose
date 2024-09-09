@@ -71,6 +71,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
+    implementation(libs.androidx.material.icons.extended)
 
 
     // ViewModel
