@@ -9,22 +9,22 @@ import retrofit2.http.POST
 interface ITodoApi {
 
     @GET("getAllTodos")
-    suspend fun getAllTodo():Response<List<TodoListItem>>
+    suspend fun getAllTodo():List<TodoListItem>
 
     @GET("getAllCompletedTodos")
-    suspend fun getAllCompletedTodo():Response<List<TodoListItem>>
+    suspend fun getAllCompletedTodo():List<TodoListItem>
 
     @GET("getAllDeletedTodos")
-    suspend fun getAllDeletedTodo():Response<List<TodoListItem>>
+    suspend fun getAllDeletedTodo():List<TodoListItem>
 
     @GET("getTodoById/{todoId}")
-    suspend fun getTodoById(todoId:Int):Response<TodoListItem>
+    suspend fun getTodoById(todoId:Int):TodoListItem
 
     @POST("addNew")
-    suspend fun addNewTodo(@Body todo:TodoListItem):Response<Boolean>
+    suspend fun addNewTodo(@Body todo:TodoListItem):TodoListItem
 
     @POST("updateTodo")
-    suspend fun updateTodo(@Body todo:TodoListItem):Response<Boolean>
+    suspend fun updateTodo(@Body todo:TodoListItem):TodoListItem
 
 
 }
