@@ -87,6 +87,7 @@ fun TodoListScreen(
                   false
               }
               is ApiState.Failure ->{
+                  viewModel.onEvent(TodoListEvent.GetNoteEvent)
                   false
               }
               is ApiState.Loading ->{
@@ -94,7 +95,6 @@ fun TodoListScreen(
               }
           }
         }
-
     }
     
     Scaffold(

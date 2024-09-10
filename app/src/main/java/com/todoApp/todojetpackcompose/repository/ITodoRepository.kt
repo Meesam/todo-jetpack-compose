@@ -1,11 +1,12 @@
-package com.todoApp.todojetpackcompose.ui.domain.repository
+package com.todoApp.todojetpackcompose.repository
 
+import com.todoApp.todojetpackcompose.models.Todo
 import com.todoApp.todojetpackcompose.models.TodoListItem
 import kotlinx.coroutines.flow.Flow
 
 interface ITodoRepository {
 
-    suspend fun addTodo(todo:TodoListItem):Flow<TodoListItem>
+    suspend fun addTodo(todo:Todo):Flow<TodoListItem>
     suspend fun getAllTodos():Flow<List<TodoListItem>>
     suspend fun getCompletedTodos():Flow<List<TodoListItem>>
     suspend fun getDeletedTodos():Flow<List<TodoListItem>>

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.todoApp.todojetpackcompose.models.TodoListItem
-import com.todoApp.todojetpackcompose.ui.domain.repository.ITodoRepository
+import com.todoApp.todojetpackcompose.repository.ITodoRepository
 import com.todoApp.todojetpackcompose.ui.todo_list.events.TodoListEvent
 import com.todoApp.todojetpackcompose.ui.todo_list.state.TodoStates
 import com.todoApp.todojetpackcompose.util.ApiState
@@ -25,15 +25,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodosViewModel @Inject constructor(private val repository: ITodoRepository) : ViewModel() {
-
-    /*val todos: StateFlow<List<TodoListItem>>
-        get() = repository.todos
-
-    init {
-        viewModelScope.launch{
-            repository.getAllTodos()
-        }
-    }*/
 
     private val _uiEvent = Channel<UiEvent> ()
     val uiEvent = _uiEvent.receiveAsFlow()

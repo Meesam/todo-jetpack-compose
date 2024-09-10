@@ -1,7 +1,7 @@
 package com.todoApp.todojetpackcompose.api
 
+import com.todoApp.todojetpackcompose.models.Todo
 import com.todoApp.todojetpackcompose.models.TodoListItem
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -21,7 +21,7 @@ interface ITodoApi {
     suspend fun getTodoById(todoId:Int):TodoListItem
 
     @POST("addNew")
-    suspend fun addNewTodo(@Body todo:TodoListItem):TodoListItem
+    suspend fun addNewTodo(@Body todo:Todo):TodoListItem
 
     @POST("updateTodo")
     suspend fun updateTodo(@Body todo:TodoListItem):TodoListItem

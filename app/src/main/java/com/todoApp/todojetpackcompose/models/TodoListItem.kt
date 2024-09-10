@@ -9,3 +9,5 @@ data class TodoListItem(
     val createdDate:String,
     var lastModifiedDate:String?
 )
+
+data class Todo(val title:String, val description:String)
