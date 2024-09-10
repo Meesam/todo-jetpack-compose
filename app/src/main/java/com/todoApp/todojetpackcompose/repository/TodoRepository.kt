@@ -6,103 +6,48 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.todoApp.todojetpackcompose.api.ITodoApi
 import com.todoApp.todojetpackcompose.models.TodoListItem
+import com.todoApp.todojetpackcompose.ui.domain.repository.ITodoRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class TodoRepository @Inject constructor(private val todoApi: ITodoApi) {
+class TodoRepository @Inject constructor(private val todoApi: ITodoApi):ITodoRepository {
 
-    private val _todos = MutableStateFlow<List<TodoListItem>>(emptyList())
-    val todos:StateFlow<List<TodoListItem>>
-        get() = _todos
+    override suspend fun addTodo(todo: TodoListItem): Flow<TodoListItem> = flow {
+        emit(todoApi.addNewTodo(todo))
+    }.flowOn(Dispatchers.IO)
 
-    suspend fun getAllTodos(){
-        try {
-            val response = todoApi.getAllTodo()
-            if(response.isSuccessful && response.body() != null){
-                _todos.emit(response.body()!!)
-            }
-        }catch (ex:Exception){
-            Log.d("Todo Error", ex.message.toString())
-        }
+    override suspend fun getAllTodos(): Flow<List<TodoListItem>> = flow{
+        emit(todoApi.getAllTodo())
     }
 
-    private val _completedTodos = MutableStateFlow<List<TodoListItem>>(emptyList())
-    val completedTodos:StateFlow<List<TodoListItem>>
-        get() = _completedTodos
-
-    suspend fun getAllCompletedTodos(){
-        try {
-            val response = todoApi.getAllCompletedTodo()
-            if(response.isSuccessful && response.body() != null){
-                _todos.emit(response.body()!!)
-            }
-        }catch (ex:Exception){
-            Log.d("Todo Error", ex.message.toString())
-        }
+    override suspend fun getCompletedTodos(): Flow<List<TodoListItem>> = flow {
+        emit(todoApi.getAllCompletedTodo())
     }
 
-    private val _deletedTodos = MutableStateFlow<List<TodoListItem>>(emptyList())
-    val deletedTodos:StateFlow<List<TodoListItem>>
-        get() = _deletedTodos
-
-    suspend fun getAllDeletedTodos(){
-        try {
-            val response = todoApi.getAllDeletedTodo()
-            if(response.isSuccessful && response.body() != null){
-                _todos.emit(response.body()!!)
-            }
-        }catch (ex:Exception){
-            Log.d("Todo Error", ex.message.toString())
-        }
+    override suspend fun getDeletedTodos(): Flow<List<TodoListItem>> = flow {
+        emit(todoApi.getAllDeletedTodo())
     }
 
-    private val _isAddDone = mutableStateOf<Boolean>(false)
-    val isDone:State<Boolean>
-        get() = _isAddDone
-
-    suspend fun addNewTodo(todo:TodoListItem){
-        try{
-            val response = todoApi.addNewTodo(todo)
-            if(response.isSuccessful && response.body() != null){
-                _isAddDone.value = response.body()!!
-                getAllTodos()
-            }
-        }catch (ex:Exception){
-            Log.d("Todo Error", ex.message.toString())
-        }
+    override suspend fun updateTodo(todo: TodoListItem, isDone:Boolean): Flow<TodoListItem> = flow {
+        emit(todoApi.updateTodo(todo.copy(
+            isCompleted = isDone
+        )))
     }
 
-    private val _isUpdateDone = mutableStateOf<Boolean>(false)
-    val isUpdateDone:State<Boolean>
-        get() = _isUpdateDone
-
-    suspend fun updateTodo(todo:TodoListItem){
-        try{
-            Log.d("Todo Input", todo.toString())
-            val response = todoApi.updateTodo(todo)
-            if(response.isSuccessful && response.body() != null){
-                _isUpdateDone.value = response.body()!!
-                getAllTodos()
-            }
-        }catch (ex:Exception){
-            Log.d("Todo Error", ex.message.toString())
-        }
+    override suspend fun deleteTodo(todo: TodoListItem): Flow<TodoListItem> = flow {
+        emit(todoApi.updateTodo(todo.copy(
+            isDeleted = true
+        )))
     }
 
-    private val _isDeleteDone = mutableStateOf<Boolean>(false)
-    val isDeleteDone:State<Boolean>
-        get() = _isDeleteDone
-
-    suspend fun deleteTodo(todo:TodoListItem){
-        try{
-            val response = todoApi.updateTodo(todo)
-            if(response.isSuccessful && response.body() != null){
-                _isDeleteDone.value = response.body()!!
-                getAllTodos()
-            }
-        }catch (ex:Exception){
-            Log.d("Todo Error", ex.message.toString())
-        }
+    override suspend fun getTodoById(todoId: Int): Flow<TodoListItem> = flow{
+        emit(todoApi.getTodoById(todoId))
     }
+
+
 }
