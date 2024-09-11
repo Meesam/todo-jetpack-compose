@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class TodoRepository @Inject constructor(private val todoApi: ITodoApi): ITodoRepository {
 
-    override suspend fun addTodo(todo: Todo): Flow<TodoListItem> = flow {
+    override suspend fun addTodo(todo: Todo): Flow<Boolean> = flow {
         emit(todoApi.addNewTodo(todo))
     }.flowOn(Dispatchers.IO)
 
@@ -27,13 +27,13 @@ class TodoRepository @Inject constructor(private val todoApi: ITodoApi): ITodoRe
         emit(todoApi.getAllDeletedTodo())
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun updateTodo(todo: TodoListItem, isDone:Boolean): Flow<TodoListItem> = flow {
+    override suspend fun updateTodo(todo: TodoListItem, isDone:Boolean): Flow<Boolean> = flow {
         emit(todoApi.updateTodo(todo.copy(
             isCompleted = isDone
         )))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun deleteTodo(todo: TodoListItem): Flow<TodoListItem> = flow {
+    override suspend fun deleteTodo(todo: TodoListItem): Flow<Boolean> = flow {
         emit(todoApi.updateTodo(todo.copy(
             isDeleted = true
         )))

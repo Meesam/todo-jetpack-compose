@@ -21,10 +21,10 @@ interface ITodoApi {
     suspend fun getTodoById(todoId:Int):TodoListItem
 
     @POST("addNew")
-    suspend fun addNewTodo(@Body todo:Todo):TodoListItem
+    suspend fun addNewTodo(@Body todo:Todo):Boolean
 
     @POST("updateTodo")
-    suspend fun updateTodo(@Body todo:TodoListItem):TodoListItem
+    suspend fun updateTodo(@Body todo:TodoListItem):Boolean
 
 
 }

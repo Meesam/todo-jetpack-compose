@@ -24,7 +24,7 @@ class AddEditTodoViewModel @Inject constructor(private val repository: ITodoRepo
     private val _uiEvent = Channel<UiEvent> ()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _addTodoEventFlow = MutableSharedFlow<ApiState<TodoListItem>>()
+    private val _addTodoEventFlow = MutableSharedFlow<ApiState<Boolean>>()
     val addTodoEventFlow = _addTodoEventFlow.asSharedFlow()
 
     val title = mutableStateOf("")
@@ -48,11 +48,18 @@ class AddEditTodoViewModel @Inject constructor(private val repository: ITodoRepo
                         }.catch {
                             _addTodoEventFlow.emit(ApiState.Failure(errorMessage = "Something went wrong"))
                         }.collect{
-                            _addTodoEventFlow.emit(ApiState.Success(data = it))
+                            sendUiEvent(UiEvent.ShowSnackBar("Todo added successfully", null))
+                            _addTodoEventFlow.emit(ApiState.Success(true))
                         }
                 }
             }
 
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent){
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 

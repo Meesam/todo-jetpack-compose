@@ -29,17 +29,23 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
     private val _uiEvent = Channel<UiEvent> ()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _updateTodoEventFlow = MutableSharedFlow<ApiState<TodoListItem>>()
+    private val _updateTodoEventFlow = MutableSharedFlow<ApiState<Boolean>>()
     val updateTodoEventFlow = _updateTodoEventFlow.asSharedFlow()
 
-    private val _deleteTodoEventFlow = MutableSharedFlow<ApiState<TodoListItem>>()
+    private val _deleteTodoEventFlow = MutableSharedFlow<ApiState<Boolean>>()
     val deleteTodoEventFlow = _deleteTodoEventFlow.asSharedFlow()
 
-    /*private val _addTodoEventFlow = MutableSharedFlow<ApiState<TodoListItem>>()
-    val addTodoEventFlow = _addTodoEventFlow.asSharedFlow()*/
 
     private val _getTodoEventFlow = mutableStateOf(TodoStates())
     val getTodoEventFlow:State<TodoStates> = _getTodoEventFlow
+
+    private val _getCompletedTodoEventFlow = mutableStateOf(TodoStates())
+    val getCompletedTodoEventFlow:State<TodoStates> = _getCompletedTodoEventFlow
+
+    private val _getdeletedTodoEventFlow = mutableStateOf(TodoStates())
+    val getdeletedTodoEventFlow:State<TodoStates> = _getdeletedTodoEventFlow
+
+
     fun onEvent(event: TodoListEvent){
         when (event){
             is TodoListEvent.OnAddTodoClick -> {
@@ -56,7 +62,8 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
                         }.catch {
                             _deleteTodoEventFlow.emit(ApiState.Failure(errorMessage = "Something went wrong"))
                         }.collect{
-                            _deleteTodoEventFlow.emit(ApiState.Success(data = it))
+                            sendUiEvent(UiEvent.ShowSnackBar("Todo deleted successfully", null))
+                            _deleteTodoEventFlow.emit(ApiState.Success(true))
                         }
                 }
             }
@@ -68,7 +75,7 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
                         }.catch {
                             _updateTodoEventFlow.emit(ApiState.Failure(errorMessage = "Something went wrong"))
                         }.collect{
-                            _updateTodoEventFlow.emit(ApiState.Success(data = it))
+                            _updateTodoEventFlow.emit(ApiState.Success(data = true))
                         }
                 }
             }
@@ -87,6 +94,47 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
                                 )
                         }.collect{
                             _getTodoEventFlow.value =
+                                TodoStates(
+                                    data = it
+                                )
+                        }
+                }
+            }
+
+            TodoListEvent.GetComopletedNoteEvent -> {
+                viewModelScope.launch {
+                    repository.getCompletedTodos()
+                        .onStart {
+                            _getCompletedTodoEventFlow.value =TodoStates(
+                                isLoading = true
+                            )
+                        }.catch {
+                            _getCompletedTodoEventFlow.value =
+                                TodoStates(
+                                    error = "Something went wrong"
+                                )
+                        }.collect{
+                            _getCompletedTodoEventFlow.value =
+                                TodoStates(
+                                    data = it
+                                )
+                        }
+                }
+            }
+            TodoListEvent.GetDeleteNoteEvent -> {
+                viewModelScope.launch {
+                    repository.getDeletedTodos()
+                        .onStart {
+                            _getdeletedTodoEventFlow.value =TodoStates(
+                                isLoading = true
+                            )
+                        }.catch {
+                            _getdeletedTodoEventFlow.value =
+                                TodoStates(
+                                    error = "Something went wrong"
+                                )
+                        }.collect{
+                            _getdeletedTodoEventFlow.value =
                                 TodoStates(
                                     data = it
                                 )

@@ -8,4 +8,6 @@ sealed class TodoListEvent {
   data object OnAddTodoClick : TodoListEvent()
   data class OnTodoClick(val todo:TodoListItem) : TodoListEvent()
   object GetNoteEvent:TodoListEvent()
+  object GetDeleteNoteEvent:TodoListEvent()
+  object GetComopletedNoteEvent:TodoListEvent()
 }
