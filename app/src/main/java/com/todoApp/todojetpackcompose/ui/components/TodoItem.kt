@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,8 +30,10 @@ fun TodoListItemScreen(todo: TodoListItem, onDelete :()->Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 10.dp, start = 10.dp, end = 10.dp)
+        .shadow(elevation = 1.5.dp, RoundedCornerShape(10.dp))
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colorScheme.primaryContainer)
+
 
     ) {
         Row(

@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.todoApp.todojetpackcompose.ui.add_edit_todo.events.AddEditTodoEvent
@@ -82,13 +83,15 @@ fun AddEditTodoScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Add Todo")
+                    Text(text = "Add Todo", color = Color.White)
                 }, colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
                     IconButton(onClick = { onPopBackStack() }) {
-                      Icon(imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = "")
+                      Icon(imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = "",
+                       tint = Color.White
+                      )
 
                     }
                 }
