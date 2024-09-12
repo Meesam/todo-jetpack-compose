@@ -5,4 +5,6 @@ object Routes {
   const val ADD_EDIT_TODO ="add_edit_todo"
   const val ALL_COMPLETED_TODO_LIST = "completed-todo-list"
   const val ALL_DELETED_TODO_LIST = "deleted-todo-list"
+  const val USER_REGISTRATION = "user-registration"
+  const val USER_LOGIN = "user-login"
 }

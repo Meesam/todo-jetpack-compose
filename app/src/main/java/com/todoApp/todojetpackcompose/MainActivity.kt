@@ -8,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.todoApp.todojetpackcompose.ui.add_edit_todo.AddEditTodoScreen
+import com.todoApp.todojetpackcompose.ui.authentication.UserLogin
+import com.todoApp.todojetpackcompose.ui.authentication.UserRegistration
 import com.todoApp.todojetpackcompose.ui.theme.TodoJetpackComposeTheme
 import com.todoApp.todojetpackcompose.ui.todo_list.AllCompletedTodoList
 import com.todoApp.todojetpackcompose.ui.todo_list.AllDeletedTodoList
@@ -23,7 +25,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             TodoJetpackComposeTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = Routes.TODO_LIST){
+                NavHost(navController = navController, startDestination = Routes.USER_LOGIN){
+                    composable(Routes.USER_REGISTRATION){
+                        UserRegistration()
+                    }
+
+                    composable(Routes.USER_LOGIN){
+                        UserLogin()
+                    }
+
                     composable(Routes.TODO_LIST){
                         AllTodoList(
                             onNavigate = {
