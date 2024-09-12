@@ -27,6 +27,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -48,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.todoApp.todojetpackcompose.ui.navigation.BottomNavigation
 import com.todoApp.todojetpackcompose.ui.todo_list.TodosViewModel
 import com.todoApp.todojetpackcompose.ui.todo_list.events.TodoListEvent
 import com.todoApp.todojetpackcompose.util.ApiState
@@ -136,7 +139,8 @@ fun TodoListScreen(
                     title = {
                         Row(horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(end = 10.dp, top = 15.dp, bottom = 10.dp)
                         ) {
                             when(eventType){
@@ -151,14 +155,7 @@ fun TodoListScreen(
                                 }
                                 else -> Text(text = "All Todos", color = Color.White)
                             }
-                            OutlinedTextField(value = "", onValueChange = {}, placeholder = {
-                                Text(text = "Search...")
-                            }, modifier = Modifier
-                                .clip(RoundedCornerShape(50.dp))
-                                .background(Color.White)
-                                .height(50.dp)
 
-                                )
                         }
 
                     }, colors = TopAppBarDefaults.topAppBarColors(
@@ -180,43 +177,7 @@ fun TodoListScreen(
                 }
             },
             bottomBar = {
-                BottomAppBar(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .zIndex(.5f)
-                        .padding(15.dp)
-                        .clip(RoundedCornerShape(50.dp))
-                ) {
-                    Row(horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = {
-                                onNavigate(UiEvent.Navigate(Routes.TODO_LIST))
-                            }) {
-                                Icon(imageVector = Icons.Filled.Task , contentDescription = "")
-                            }
-                            Text(text = "All Todos", fontSize = 12.sp, color = Color.White)
-                        }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = {
-                                onNavigate(UiEvent.Navigate(Routes.ALL_COMPLETED_TODO_LIST))
-                            }) {
-                                Icon(imageVector = Icons.Filled.TaskAlt , contentDescription = "")
-                            }
-                            Text(text = "Completed", fontSize = 12.sp, color = Color.White)
-                        }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            IconButton(onClick = {
-                                onNavigate(UiEvent.Navigate(Routes.ALL_DELETED_TODO_LIST))
-                            }) {
-                                Icon(imageVector = Icons.Filled.Dataset , contentDescription = "")
-                            }
-                            Text(text = "Deleted", fontSize = 12.sp, color = Color.White)
-                        }
-                    }
-                }
+                BottomNavigation(onNavigate)
             }
 
         ) { paddingValue ->
@@ -226,7 +187,6 @@ fun TodoListScreen(
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
                             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                         }
-
                     }
                 }
                 if (todos != null) {
