@@ -27,11 +27,19 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = Routes.USER_LOGIN){
                     composable(Routes.USER_REGISTRATION){
-                        UserRegistration()
+                        UserRegistration(
+                            onNavigate = {
+                                navController.navigate(it.route)
+                            },
+                        )
                     }
 
                     composable(Routes.USER_LOGIN){
-                        UserLogin()
+                        UserLogin(
+                            onNavigate = {
+                                navController.navigate(it.route)
+                            },
+                        )
                     }
 
                     composable(Routes.TODO_LIST){

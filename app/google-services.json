@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "716219840316",
+    "project_id": "todo-jetpack-compose-fdce5",
+    "storage_bucket": "todo-jetpack-compose-fdce5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716219840316:android:8f416f0f840ffe37c51039",
+        "android_client_info": {
+          "package_name": "com.todoApp.todojetpackcompose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv1dzxlb2bTe_Hdq7pWXGdTzv_Ynm6tAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

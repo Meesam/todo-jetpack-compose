@@ -50,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.todoApp.todojetpackcompose.ui.authentication.UserLoginViewModel
 import com.todoApp.todojetpackcompose.ui.navigation.BottomNavigation
 import com.todoApp.todojetpackcompose.ui.todo_list.TodosViewModel
 import com.todoApp.todojetpackcompose.ui.todo_list.events.TodoListEvent
@@ -158,7 +159,11 @@ fun TodoListScreen(
 
                         }
 
-                    }, colors = TopAppBarDefaults.topAppBarColors(
+                    },
+                    actions = {
+                        UserSignOut(onNavigate)
+                    }
+                    , colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 )

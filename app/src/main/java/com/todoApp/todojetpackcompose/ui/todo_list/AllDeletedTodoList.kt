@@ -2,6 +2,7 @@ package com.todoApp.todojetpackcompose.ui.todo_list
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.todoApp.todojetpackcompose.ui.authentication.UserLoginViewModel
 import com.todoApp.todojetpackcompose.ui.components.TodoListScreen
 import com.todoApp.todojetpackcompose.util.UiEvent
 
@@ -11,7 +12,7 @@ fun AllDeletedTodoList(
     viewModel: TodosViewModel = hiltViewModel(),
     type:String
 ) {
-    TodoListScreen(onNavigate, viewModel , type)
+    TodoListScreen(onNavigate, viewModel ,type)
 }
 
 
