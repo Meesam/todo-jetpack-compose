@@ -6,6 +6,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.icons.filled.TaskAlt
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -25,7 +27,8 @@ import com.todoApp.todojetpackcompose.util.UiEvent
 
 @Composable
 fun BottomNavigation(
-    onNavigate:(UiEvent.Navigate)->Unit
+    onNavigate:(UiEvent.Navigate)->Unit,
+    notificationCount:Int
 ){
     val navItems = listOf(
         NavItem(title = "All Todo", Icons.Default.Task),
@@ -58,12 +61,23 @@ fun BottomNavigation(
                         "Deleted" -> {
                             onNavigate(UiEvent.Navigate(Routes.ALL_DELETED_TODO_LIST))
                         }
-
                     }
-
                 },
                 icon = {
-                    navItem.icon?.let { Icon(imageVector = it, contentDescription = "Icon") }
+                    if(navItem.title =="All Todo" && notificationCount > 0){
+                        BadgedBox(badge = {
+                            Badge(
+                                contentColor = Color.Red,
+                                ){
+                                    Text(text =  notificationCount.toString(), color = Color.White)
+                            }
+                        }) {
+                            navItem.icon?.let { Icon(imageVector = it, contentDescription = "Icon") }
+                        }
+                    }else{
+                        navItem.icon?.let { Icon(imageVector = it, contentDescription = "Icon") }
+                    }
+
                 },
                 label = {
                     Text(text = navItem.title)

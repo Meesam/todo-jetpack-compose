@@ -4,6 +4,7 @@ import com.todoApp.todojetpackcompose.api.ITodoApi
 import com.todoApp.todojetpackcompose.models.Todo
 import com.todoApp.todojetpackcompose.models.TodoListItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -43,5 +44,12 @@ class TodoRepository @Inject constructor(private val todoApi: ITodoApi): ITodoRe
         emit(todoApi.getTodoById(todoId))
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getNotification(): Flow<Int> = flow {
+        val notifications = listOf(1,2,3,4,5,6)
+        notifications.forEach {
+            delay(9000)
+            emit(it)
+        }
+    }.flowOn(Dispatchers.IO)
 
 }

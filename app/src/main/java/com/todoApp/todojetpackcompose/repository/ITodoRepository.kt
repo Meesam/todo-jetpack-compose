@@ -13,4 +13,5 @@ interface ITodoRepository {
     suspend fun updateTodo(todo:TodoListItem,isDone:Boolean):Flow<Boolean>
     suspend fun deleteTodo(todo:TodoListItem):Flow<Boolean>
     suspend fun getTodoById(todoId:Int):Flow<TodoListItem>
+    suspend fun getNotification() :Flow<Int>
 }

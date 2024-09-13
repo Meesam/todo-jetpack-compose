@@ -1,6 +1,7 @@
 package com.todoApp.todojetpackcompose.ui.todo_list
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,6 +46,17 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
     private val _getdeletedTodoEventFlow = mutableStateOf(TodoStates())
     val getdeletedTodoEventFlow:State<TodoStates> = _getdeletedTodoEventFlow
 
+    private val _getNotificationEventFlow = mutableIntStateOf(0)
+    val getNotificationEventFlow = _getNotificationEventFlow
+
+    init {
+        viewModelScope.launch {
+            repository.getNotification()
+                .collect{
+                    _getNotificationEventFlow.intValue = it
+                }
+        }
+    }
 
     fun onEvent(event: TodoListEvent){
         when (event){
