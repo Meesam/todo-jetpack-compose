@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.todoApp.todojetpackcompose.models.TodoListItem
 import com.todoApp.todojetpackcompose.repository.ITodoRepository
 import com.todoApp.todojetpackcompose.ui.todo_list.events.TodoListEvent
 import com.todoApp.todojetpackcompose.ui.todo_list.state.TodoStates
@@ -15,8 +14,6 @@ import com.todoApp.todojetpackcompose.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -30,8 +27,8 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
     private val _uiEvent = Channel<UiEvent> ()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _updateTodoEventFlow = MutableSharedFlow<ApiState<Boolean>>()
-    val updateTodoEventFlow = _updateTodoEventFlow.asSharedFlow()
+    /*private val _updateTodoEventFlow = MutableSharedFlow<ApiState<Boolean>>()
+    val updateTodoEventFlow = _updateTodoEventFlow.asSharedFlow()*/
 
     private val _deleteTodoEventFlow = MutableSharedFlow<ApiState<Boolean>>()
     val deleteTodoEventFlow = _deleteTodoEventFlow.asSharedFlow()
@@ -80,7 +77,7 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
                 }
             }
             is TodoListEvent.OnDoneChange -> {
-                viewModelScope.launch {
+                /*viewModelScope.launch {
                     repository.updateTodo(event.todo, event.isDone)
                         .onStart {
                             _updateTodoEventFlow.emit(ApiState.Loading)
@@ -89,7 +86,7 @@ class TodosViewModel @Inject constructor(private val repository: ITodoRepository
                         }.collect{
                             _updateTodoEventFlow.emit(ApiState.Success(data = true))
                         }
-                }
+                }*/
             }
 
             TodoListEvent.GetNoteEvent -> {

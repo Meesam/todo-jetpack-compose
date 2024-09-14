@@ -1,7 +1,6 @@
 package com.todoApp.todojetpackcompose.ui.navigation
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Task
@@ -16,10 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.todoApp.todojetpackcompose.util.Routes
@@ -35,8 +32,25 @@ fun BottomNavigation(
         NavItem(title = "Completed", Icons.Default.TaskAlt),
         NavItem(title = "Deleted", Icons.Default.DeleteSweep)
     )
-    var selectedIndex by remember {
+    var selectedIndex by rememberSaveable {
         mutableIntStateOf(0)
+    }
+
+    Log.d("selectedIndex" , "$selectedIndex")
+
+    fun onItemClickHandler(index:Int, navItem:NavItem){
+        selectedIndex = index
+        when(navItem.title){
+            "All Todo" -> {
+                onNavigate(UiEvent.Navigate(Routes.TODO_LIST))
+            }
+            "Completed" -> {
+                onNavigate(UiEvent.Navigate(Routes.ALL_COMPLETED_TODO_LIST))
+            }
+            "Deleted" -> {
+                onNavigate(UiEvent.Navigate(Routes.ALL_DELETED_TODO_LIST))
+            }
+        }
     }
 
     NavigationBar(
@@ -48,21 +62,7 @@ fun BottomNavigation(
         navItems.forEachIndexed{ index, navItem->
             NavigationBarItem(
                 selected = selectedIndex == index,
-                onClick = {
-                    when(navItem.title){
-                        "All Todo" -> {
-                            selectedIndex = index
-                            onNavigate(UiEvent.Navigate(Routes.TODO_LIST))
-                        }
-                        "Completed" -> {
-                            selectedIndex = index
-                            onNavigate(UiEvent.Navigate(Routes.ALL_COMPLETED_TODO_LIST))
-                        }
-                        "Deleted" -> {
-                            onNavigate(UiEvent.Navigate(Routes.ALL_DELETED_TODO_LIST))
-                        }
-                    }
-                },
+                onClick = {onItemClickHandler(index, navItem)},
                 icon = {
                     if(navItem.title =="All Todo" && notificationCount > 0){
                         BadgedBox(badge = {
@@ -77,7 +77,6 @@ fun BottomNavigation(
                     }else{
                         navItem.icon?.let { Icon(imageVector = it, contentDescription = "Icon") }
                     }
-
                 },
                 label = {
                     Text(text = navItem.title)

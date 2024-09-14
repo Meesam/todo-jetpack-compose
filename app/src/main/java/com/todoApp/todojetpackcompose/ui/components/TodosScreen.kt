@@ -1,6 +1,5 @@
 package com.todoApp.todojetpackcompose.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -32,7 +31,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.todoApp.todojetpackcompose.R
 import com.todoApp.todojetpackcompose.ui.navigation.BottomNavigation
 import com.todoApp.todojetpackcompose.ui.todo_list.TodosViewModel
 import com.todoApp.todojetpackcompose.ui.todo_list.events.TodoListEvent
@@ -62,7 +63,6 @@ fun TodoListScreen(
             }
             else -> null
         }
-
         val notifications = viewModel.getNotificationEventFlow.intValue
 
         val snackbarHostState = remember { SnackbarHostState() }
@@ -74,7 +74,6 @@ fun TodoListScreen(
                             message = event.message
                         )
                     }
-
                     is UiEvent.Navigate -> onNavigate(event)
                     else -> Unit
                 }
@@ -93,7 +92,6 @@ fun TodoListScreen(
                 "all-deleted-todos" ->{
                     viewModel.onEvent(TodoListEvent.GetDeleteNoteEvent)
                 }
-                else -> viewModel.onEvent(TodoListEvent.GetNoteEvent)
             }
         }
 
@@ -130,19 +128,17 @@ fun TodoListScreen(
                         ) {
                             when(eventType){
                                 "all-todos" -> {
-                                    Text(text = "All Todos", color = Color.White)
+                                    Text(text = stringResource(id = R.string.all_todos_title), color = Color.White)
                                 }
                                 "all-completed-todos" -> {
-                                    Text(text = "Completed Todos", color = Color.White)
+                                    Text(text = stringResource(id = R.string.completed_todos_title), color = Color.White)
                                 }
                                 "all-deleted-todos" ->{
-                                    Text(text = "Delete Todos", color = Color.White)
+                                    Text(text = stringResource(id = R.string.deleted_todos_title), color = Color.White)
                                 }
-                                else -> Text(text = "All Todos", color = Color.White)
+                                else -> Text(text = stringResource(id = R.string.all_todos_title), color = Color.White)
                             }
-
                         }
-
                     },
                     actions = {
                         UserSignOut(onNavigate)
@@ -180,11 +176,10 @@ fun TodoListScreen(
                 }
                 if (todos != null) {
                     if(todos.data.isNotEmpty()){
-                        LazyColumn() {
+                        LazyColumn {
                             items(todos.data, key = {
                                 it.id
-                            }) { it ->
-                                TodoListItemScreen(todo =  it) {
+                            }) { TodoListItemScreen(it) {
                                     viewModel.onEvent(TodoListEvent.OnDeleteTodoClick(it))
                                 }
                             }
