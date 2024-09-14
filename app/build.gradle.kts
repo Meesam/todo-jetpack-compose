@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.todoApp.todojetpackcompose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.todoApp.todojetpackcompose"
@@ -102,5 +102,6 @@ dependencies {
     implementation(libs.androidx.graphics.core)
     implementation(libs.androidx.graphics.path)
     implementation(libs.androidx.graphics.shapes)
+    implementation(libs.androidx.core.splashscreen)
 
 }

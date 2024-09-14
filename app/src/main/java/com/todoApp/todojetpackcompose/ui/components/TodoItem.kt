@@ -30,11 +30,9 @@ fun TodoListItemScreen(todo: TodoListItem, onDelete :()->Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 10.dp, start = 10.dp, end = 10.dp)
-        .shadow(elevation = 1.5.dp, RoundedCornerShape(10.dp))
+        .shadow(elevation = 2.dp, RoundedCornerShape(10.dp))
         .clip(RoundedCornerShape(10.dp))
         .background(MaterialTheme.colorScheme.primaryContainer)
-
-
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -45,16 +43,12 @@ fun TodoListItemScreen(todo: TodoListItem, onDelete :()->Unit) {
                 modifier = Modifier.padding(start = 12.dp, bottom = 10.dp)) {
                 Text(text = todo.title, fontSize = 23.sp, fontWeight = FontWeight.W600)
             }
-
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = {
-                    onDelete()
-                }
+                IconButton(onClick = { onDelete() }
                 ) {
                     Icon(imageVector = Icons.Filled.Delete, contentDescription = "")
                 }
             }
-
         }
 
         Spacer(modifier = Modifier.height(10.dp))
