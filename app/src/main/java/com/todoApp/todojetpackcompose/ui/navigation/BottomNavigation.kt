@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import com.todoApp.todojetpackcompose.ui.navigation.events.BottomNavigationEvent
 import com.todoApp.todojetpackcompose.util.Routes
 import com.todoApp.todojetpackcompose.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun BottomNavigation(
@@ -33,6 +35,7 @@ fun BottomNavigation(
     notificationCount:Int,
     viewModel: BottomNavigationViewModel  = hiltViewModel()
 ){
+    val scope = rememberCoroutineScope()
     val navItems = listOf(
         NavItem(title = "All Todo", Icons.Default.Task),
         NavItem(title = "Completed", Icons.Default.TaskAlt),
@@ -40,17 +43,18 @@ fun BottomNavigation(
     )
 
     fun onItemClickHandler(index:Int, navItem:NavItem){
-        //selectedIndex = index
-        viewModel.onEvent(BottomNavigationEvents.onSelectedIndex(index))
-        when(navItem.title){
-            "All Todo" -> {
-                onNavigate(UiEvent.Navigate(Routes.TODO_LIST))
-            }
-            "Completed" -> {
-                onNavigate(UiEvent.Navigate(Routes.ALL_COMPLETED_TODO_LIST))
-            }
-            "Deleted" -> {
-                onNavigate(UiEvent.Navigate(Routes.ALL_DELETED_TODO_LIST))
+        scope.launch {
+            viewModel.onEvent(BottomNavigationEvents.onSelectedIndex(index))
+            when(navItem.title){
+                "All Todo" -> {
+                    onNavigate(UiEvent.Navigate(Routes.TODO_LIST))
+                }
+                "Completed" -> {
+                    onNavigate(UiEvent.Navigate(Routes.ALL_COMPLETED_TODO_LIST))
+                }
+                "Deleted" -> {
+                    onNavigate(UiEvent.Navigate(Routes.ALL_DELETED_TODO_LIST))
+                }
             }
         }
     }
